@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000000"
+    >
+    
+        <ListView
+        android:id="@+id/in"
+        android:layout_width="match_parent"
+        android:layout_height="14dp"  
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll" />
+    
+<TextView
+        android:id="@+id/txtWindow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:text="@string/display"
+        android:textSize="16sp" />  
+
+<EditText
+     android:id="@+id/command_line"
+     
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:background="#777777"
+     android:textColor="#cccccc"
+     android:textSize="20sp"
+     />
+
+    <Button
+        android:id="@+id/send_command"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/command_line"
+        android:textColor="#bbbbbb"
+
+        android:text="@string/command_button" />
+   
+        <ScrollView
+		android:id="@+id/SCROLLER_ID"
+		android:layout_below="@id/send_command"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:scrollbars="vertical"
+		android:background="#000000" 
+		android:fillViewport="true">
+        
+    
+    <TextView
+        android:id="@+id/msgWindow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:text="@string/display"
+        android:textSize="12sp" />  
+
+    </ScrollView>
+    
+    
+    
+    
+    
+</RelativeLayout>
