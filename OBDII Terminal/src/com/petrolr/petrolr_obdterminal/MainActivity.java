@@ -46,7 +46,7 @@ import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
-	private static final String TAG = "OBD Reader";
+	private static final String TAG = "OBDII Terminal";
 	private ListView mConversationView;
 	
 	// Name of the connected device
