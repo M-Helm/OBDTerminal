@@ -284,7 +284,7 @@ public class MainActivity extends Activity {
 	                String readMessage = new String(readBuf, 0, msg.arg1);
 	                dataRecieved = readMessage;
 	                dataRecieved = dataRecieved.trim();
-	        		msgWindow.append("\n" + " " + dataRecieved + " ");
+	        		msgWindow.append("\n" + "Response: " + dataRecieved + " ");
 
 	                break;
 	            case MESSAGE_DEVICE_NAME:
