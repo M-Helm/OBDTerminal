@@ -283,7 +283,7 @@ public class MainActivity extends Activity {
 	                // construct a string from the valid bytes in the buffer               
 	                String readMessage = new String(readBuf, 0, msg.arg1);
 	                dataRecieved = readMessage;
-	                dataRecieved = dataRecieved.trim();
+	                dataRecieved = dataRecieved.trim(); 
 	        		msgWindow.append("\n" + "Response: " + dataRecieved + " ");
 
 	                break;
