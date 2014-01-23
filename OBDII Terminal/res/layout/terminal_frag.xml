@@ -13,33 +13,18 @@
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll" />
     
-<TextView
-        android:id="@+id/txtWindow"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffff"
-        android:text="@string/display"
-        android:textSize="16sp" />  
 
 <EditText
-     android:id="@+id/command_line"
-     
-     android:layout_width="fill_parent"
-     android:layout_height="wrap_content"
-     android:background="#777777"
-     android:textColor="#cccccc"
-     android:textSize="20sp"
-     />
-
-    <Button
-        android:id="@+id/send_command"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/command_line"
-        android:textColor="#bbbbbb"
-
-        android:text="@string/command_button" />
+    android:id="@+id/command_line"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignBottom="@+id/send_command"
+    android:layout_alignParentTop="true"
+    android:layout_toLeftOf="@+id/send_command"
+    android:inputType="text"
+    android:background="@drawable/input_frame"
+    android:textColor="#0000ee"
+    android:textSize="20sp" />
    
         <ScrollView
 		android:id="@+id/SCROLLER_ID"
@@ -55,14 +40,20 @@
         android:id="@+id/msgWindow"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textColor="#ffffff"
+        android:textColor="#00ff00"
         android:text="@string/display"
-        android:textSize="12sp" />  
+        android:textSize="14sp" />  
 
     </ScrollView>
-    
-    
-    
-    
+
+        <Button
+            android:id="@+id/send_command"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/blue_btn"
+            android:text="@string/command_button"
+            android:textColor="#bbbbbb" />
     
 </RelativeLayout>

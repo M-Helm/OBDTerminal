@@ -108,6 +108,8 @@ public class MainActivity extends Activity {
 	      finish();
 	      return;
 	  }
+	  
+	  msgWindow.setText("Petrolr OBDII Terminal Application");
 
 	    
 	}
