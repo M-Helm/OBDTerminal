@@ -23,6 +23,7 @@ package com.petrolr.petrolr_obdterminal;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.UUID;
 
 import android.annotation.SuppressLint;
@@ -46,6 +47,9 @@ import android.util.Log;
  */
 @SuppressLint("NewApi")
 public class BluetoothChatService {
+	
+	public Handler BTmsgHandler;
+	
     // Debugging
     private static final String TAG = "BluetoothChatService";
     private static final boolean D = true;
@@ -470,6 +474,7 @@ public class BluetoothChatService {
             byte[] buffer = new byte[1024];
             int bytes;
 
+
             // Keep listening to the InputStream while connected
             while (true) {
                 try {
@@ -479,15 +484,14 @@ public class BluetoothChatService {
                     } catch (InterruptedException e) {
                     }
                 	
-                	
-                	
                     // Read from the InputStream
                     bytes = mmInStream.read(buffer);
-                    
-                    
-                    // Send the obtained bytes to the UI Activity
-                    mHandler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer)
-                            .sendToTarget();
+
+                        mHandler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer)
+                                .sendToTarget();
+
+                	
+
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
                     connectionLost();

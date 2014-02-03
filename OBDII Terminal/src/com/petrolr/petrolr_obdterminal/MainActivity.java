@@ -20,6 +20,7 @@
 
 
 package com.petrolr.petrolr_obdterminal;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -54,11 +55,11 @@ public class MainActivity extends Activity {
 	// Array adapter for the conversation thread
 	private ArrayAdapter<String> mConversationArrayAdapter;
 	// String buffer for outgoing messages
-	private StringBuffer mOutStringBuffer;
+	private static StringBuffer mOutStringBuffer;
 	// Local Bluetooth adapter
 	static BluetoothAdapter mBluetoothAdapter = null;
 	// Member object for the chat services
-	private BluetoothChatService mChatService = null;
+	private static BluetoothChatService mChatService = null;
 	  
 	  
 	  
@@ -184,6 +185,7 @@ public class MainActivity extends Activity {
 
 	        // Initialize the BluetoothChatService to perform bluetooth connections
 	        mChatService = new BluetoothChatService(this, mHandler);
+	        Log.d("BT Handler SETUP ", "" +  mChatService.BTmsgHandler);
 
 	        // Initialize the buffer for outgoing messages
 	        mOutStringBuffer = new StringBuffer("");
@@ -255,10 +257,7 @@ public class MainActivity extends Activity {
 
 	        @Override
 	        public void handleMessage(Message msg) {
-	        	
-	        	String dataRecieved;
-	        	
-	        	
+
 	            switch (msg.what) {
 	            case MESSAGE_STATE_CHANGE:
 	               
@@ -284,9 +283,8 @@ public class MainActivity extends Activity {
 
 	                // construct a string from the valid bytes in the buffer               
 	                String readMessage = new String(readBuf, 0, msg.arg1);
-	                dataRecieved = readMessage;
-	                dataRecieved = dataRecieved.trim(); 
-	        		msgWindow.append("\n" + "Response: " + dataRecieved + " ");
+	                readMessage = readMessage.trim(); 
+	        		msgWindow.append("\n" + "Response: " + readMessage + " ");
 
 	                break;
 	            case MESSAGE_DEVICE_NAME:
@@ -306,17 +304,17 @@ public class MainActivity extends Activity {
 	    };		  
 	  
 
-
-public void addListenerOnButton() {
-		send_command = (Button) findViewById(R.id.send_command);
-		send_command.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				command_txt = command_line.getText().toString();
-		    	msgWindow.append("\n" + "Command: " + command_txt);
-		    	command_line.setText("");
-		    	sendMessage(command_txt + "\r");
-			}
-		});
+	
+	public void addListenerOnButton() {
+			send_command = (Button) findViewById(R.id.send_command);
+			send_command.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					command_txt = command_line.getText().toString();
+			    	msgWindow.append("\n" + "Command: " + command_txt);
+			    	command_line.setText("");
+			    	sendMessage(command_txt + "\r");
+				}
+			});
+		}
 	}
-}
