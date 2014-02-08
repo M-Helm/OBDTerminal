@@ -265,6 +265,7 @@ public class MainActivity extends Activity {
 	                case BluetoothChatService.STATE_CONNECTED:
 	                    setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
 	                    mConversationArrayAdapter.clear();
+	                    onConnect();
 	                    break;
 	                case BluetoothChatService.STATE_CONNECTING:
 	                    setStatus(R.string.title_connecting);
@@ -305,7 +306,7 @@ public class MainActivity extends Activity {
 	  
 
 	
-	public void addListenerOnButton() {
+		public void addListenerOnButton() {
 			send_command = (Button) findViewById(R.id.send_command);
 			send_command.setOnClickListener(new OnClickListener() {
 				@Override
@@ -317,4 +318,10 @@ public class MainActivity extends Activity {
 				}
 			});
 		}
-	}
+		public void onConnect(){
+			
+			//sendMessage("ATDP");
+			sendMessage("ATE0");			
+		}
+	
+}

@@ -478,16 +478,21 @@ public class BluetoothChatService {
             // Keep listening to the InputStream while connected
             while (true) {
                 try {
-                	
+
                 	try {
                         sleep(100);
                     } catch (InterruptedException e) {
                     }
                 	
                     // Read from the InputStream
-                    bytes = mmInStream.read(buffer);
 
-                        mHandler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer)
+                    bytes = mmInStream.read(buffer);
+                	
+                    
+                    byte[] buffer_clone = new byte[1024];
+                    System.arraycopy(buffer, 0, buffer_clone, 0, bytes);
+                    
+                        mHandler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer_clone)
                                 .sendToTarget();
 
                 	
