@@ -44,8 +44,6 @@ import android.widget.Toast;
 
 
 
-
-
 public class MainActivity extends Activity {
 	private static final String TAG = "OBDII Terminal";
 	private ListView mConversationView;
@@ -205,7 +203,7 @@ public class MainActivity extends Activity {
 	            // Get the message bytes and tell the BluetoothChatService to write
 	            byte[] send = message.getBytes();
 	            mChatService.write(send);
-
+	            LogWriter.write_info("\n" + "Cmd: " + message);
 	            // Reset out string buffer to zero and clear the edit text field
 	            mOutStringBuffer.setLength(0);
 	            //mOutEditText.setText(mOutStringBuffer);
@@ -213,6 +211,8 @@ public class MainActivity extends Activity {
 	    }
 	  
 	    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    	
+	    	Log.d("Terminal", "onActivityResult...");
 	        
 	        switch (requestCode) {
 	        case REQUEST_CONNECT_DEVICE_SECURE:
@@ -284,8 +284,9 @@ public class MainActivity extends Activity {
 
 	                // construct a string from the valid bytes in the buffer               
 	                String readMessage = new String(readBuf, 0, msg.arg1);
-	                readMessage = readMessage.trim(); 
-	        		msgWindow.append("\n" + "Response: " + readMessage + " ");
+	                readMessage = ("\n" + "Response: " + readMessage.trim() + " "); 
+	        		msgWindow.append(readMessage);
+	        		LogWriter.write_info(readMessage); 
 
 	                break;
 	            case MESSAGE_DEVICE_NAME:
