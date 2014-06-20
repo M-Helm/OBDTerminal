@@ -42,8 +42,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
 public class MainActivity extends Activity {
 	private static final String TAG = "OBDII Terminal";
 	private ListView mConversationView;
@@ -58,9 +56,7 @@ public class MainActivity extends Activity {
 	static BluetoothAdapter mBluetoothAdapter = null;
 	// Member object for the chat services
 	private static BluetoothChatService mChatService = null;
-	  
-	  
-	  
+	
 	// Intent request codes
 	private static final int REQUEST_CONNECT_DEVICE_SECURE = 1;
 	private static final int REQUEST_CONNECT_DEVICE_INSECURE = 2;
@@ -77,13 +73,11 @@ public class MainActivity extends Activity {
 	public static final int MESSAGE_WRITE = 3;
 	public static final int MESSAGE_DEVICE_NAME = 4;
 	public static final int MESSAGE_TOAST = 5;
-	
-    EditText command_line;
-    Button send_command;
-    TextView msgWindow;
-    String command_txt;
 
-	
+	EditText command_line;
+	Button send_command;
+	TextView msgWindow;
+	String command_txt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -172,47 +166,45 @@ public class MainActivity extends Activity {
 	
 	
 	
-	  private void setupChat() {
-	        Log.d(TAG, "setupChat()");
+    private void setupChat() {
+	    Log.d(TAG, "setupChat()");
 
-	        // Initialize the array adapter for the conversation thread
-	        mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
-	        mConversationView = (ListView) findViewById(R.id.in);
-	        mConversationView.setAdapter(mConversationArrayAdapter);
+	    // Initialize the array adapter for the conversation thread
+	    mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
+	    mConversationView = (ListView) findViewById(R.id.in);
+	    mConversationView.setAdapter(mConversationArrayAdapter);
 
 
-	        // Initialize the BluetoothChatService to perform bluetooth connections
-	        mChatService = new BluetoothChatService(this, mHandler);
-	        Log.d("BT Handler SETUP ", "" +  mChatService.BTmsgHandler);
+	    // Initialize the BluetoothChatService to perform bluetooth connections
+	    mChatService = new BluetoothChatService(this, mHandler);
+	    Log.d("BT Handler SETUP ", "" +  mChatService.BTmsgHandler);
 
-	        // Initialize the buffer for outgoing messages
-	        mOutStringBuffer = new StringBuffer("");
-	   
-	       
-	    }	
+	    // Initialize the buffer for outgoing messages
+	    mOutStringBuffer = new StringBuffer("");   
+	}	
 	  
-	    public void sendMessage(String message) {
-	        // Check that we're actually connected before trying anything
-	        if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
-	            Toast.makeText(this, "Not Connected", Toast.LENGTH_SHORT).show();
-	            return;
-	        }
-
-	        // Check that there's actually something to send
-	        if (message.length() > 0) {
-	            // Get the message bytes and tell the BluetoothChatService to write
-	            byte[] send = message.getBytes();
-	            mChatService.write(send);
-	            LogWriter.write_info("\n" + "Cmd: " + message);
-	            // Reset out string buffer to zero and clear the edit text field
-	            mOutStringBuffer.setLength(0);
-	            //mOutEditText.setText(mOutStringBuffer);
-	        }
+    public void sendMessage(String message) {
+	    // Check that we're actually connected before trying anything
+	    if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+	        Toast.makeText(this, "Not Connected", Toast.LENGTH_SHORT).show();
+	        return;
 	    }
+
+	    // Check that there's actually something to send
+	    if (message.length() > 0) {
+	        // Get the message bytes and tell the BluetoothChatService to write
+	        byte[] send = message.getBytes();
+	        mChatService.write(send);
+	        LogWriter.write_info("\n" + "Cmd: " + message);
+	        // Reset out string buffer to zero and clear the edit text field
+	        mOutStringBuffer.setLength(0);
+	        //mOutEditText.setText(mOutStringBuffer);
+	        }
+	}
 	  
-	    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    	
-	    	Log.d("Terminal", "onActivityResult...");
+	    Log.d("Terminal", "onActivityResult...");
 	        
 	        switch (requestCode) {
 	        case REQUEST_CONNECT_DEVICE_SECURE:
@@ -239,41 +231,39 @@ public class MainActivity extends Activity {
 	                finish();
 	            }
 	        }
-	    }  
+    }  
 	  
-	    private void connectDevice(Intent data, boolean secure) {
-	        // Get the device MAC address
-	        String address = data.getExtras()
-	            .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-	        // Get the BluetoothDevice object
-	        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-	        // Attempt to connect to the device
-	        mChatService.connect(device, secure);
-	    }
-	  
-	  
-	    private final Handler mHandler = new Handler() {
+	private void connectDevice(Intent data, boolean secure) {
+	    // Get the device MAC address
+	    String address = data.getExtras()
+	        .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+	    // Get the BluetoothDevice object
+	    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+	    // Attempt to connect to the device
+	    mChatService.connect(device, secure);
+    }
+	    
+	private final Handler mHandler = new Handler() {
     		
+        @Override
+	    public void handleMessage(Message msg) {
 
-	        @Override
-	        public void handleMessage(Message msg) {
-
-	            switch (msg.what) {
+	        switch (msg.what) {
 	            case MESSAGE_STATE_CHANGE:
 	               
 	                switch (msg.arg1) {
-	                case BluetoothChatService.STATE_CONNECTED:
-	                    setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
-	                    mConversationArrayAdapter.clear();
-	                    onConnect();
-	                    break;
-	                case BluetoothChatService.STATE_CONNECTING:
-	                    setStatus(R.string.title_connecting);
-	                    break;
-	                case BluetoothChatService.STATE_LISTEN:
-	                case BluetoothChatService.STATE_NONE:
-	                    setStatus(R.string.title_not_connected);
-	                    break;
+		                case BluetoothChatService.STATE_CONNECTED:
+		                    setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
+		                    mConversationArrayAdapter.clear();
+		                    onConnect();
+		                    break;
+		                case BluetoothChatService.STATE_CONNECTING:
+		                    setStatus(R.string.title_connecting);
+		                    break;
+		                case BluetoothChatService.STATE_LISTEN:
+		                case BluetoothChatService.STATE_NONE:
+		                    setStatus(R.string.title_not_connected);
+		                    break;
 	                }
 	                break;
 	            case MESSAGE_WRITE:
@@ -299,30 +289,24 @@ public class MainActivity extends Activity {
 	                Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
 	                               Toast.LENGTH_SHORT).show();
 	                break;
-	            }
 	        }
+	    }
+    };		  
 
-			
-	    };		  
-	  
-
-	
-		public void addListenerOnButton() {
-			send_command = (Button) findViewById(R.id.send_command);
-			send_command.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View arg0) {
-					command_txt = command_line.getText().toString();
-			    	msgWindow.append("\n" + "Command: " + command_txt);
-			    	command_line.setText("");
-			    	sendMessage(command_txt + "\r");
-				}
-			});
-		}
-		public void onConnect(){
-			
-			//sendMessage("ATDP");
-			sendMessage("ATE0");			
-		}
-	
+    public void addListenerOnButton() {
+	    send_command = (Button) findViewById(R.id.send_command);
+		send_command.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                command_txt = command_line.getText().toString();
+                msgWindow.append("\n" + "Command: " + command_txt);
+                command_line.setText("");
+                sendMessage(command_txt + "\r");
+		    }
+        });
+    }
+    public void onConnect(){		
+	    //sendMessage("ATDP");
+        sendMessage("ATE0");			
+    }
 }

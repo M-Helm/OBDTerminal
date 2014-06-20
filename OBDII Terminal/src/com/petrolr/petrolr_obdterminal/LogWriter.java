@@ -10,49 +10,43 @@ import android.os.Environment;
 
 
 public class LogWriter {
-	
 
-	
 	public static void write_info(final String logmsg) {
 		
-
-	      // ++++ Fire off a thread to write info to file
+        // ++++ Fire off a thread to write info to file
 		
-	      Thread w_thread = new Thread() {
-	          public void run() {
-				    	File myFilesDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/Petrolr/files");
-				    	myFilesDir.mkdirs();
-				    
-				    	String dataline = (timestamp() + ", " + logmsg + "\n");
-
-				    	File myfile = new File(myFilesDir + "/" + "Term_Log" + sDate() + ".txt");
-				    	if(myfile.exists() == true)
-				    	{
-				    		try {
-			    			FileWriter write = new FileWriter(myfile, true);
-			    			write.append(dataline);
-			    			//read_ct++;
-					    	write.close();		
-			    		}catch (Exception e){
-				    		
-				    	}
-				    		
-				    	}else{ //make a new file since we apparently need one
-				    		try {
-				    			FileWriter write = new FileWriter(myfile, true);
-				    		//	write.append(header);
-				    			write.append(dataline);
-				    			//read_ct++;
-						    	write.close();		
-				    		}catch (Exception e){
+	    Thread w_thread = new Thread() {
+		    public void run() {
+	            File myFilesDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/Petrolr/files");
+			    myFilesDir.mkdirs();
+					    
+	            String dataline = (timestamp() + ", " + logmsg + "\n");
+	            File myfile = new File(myFilesDir + "/" + "Term_Log" + sDate() + ".txt");
+	            if(myfile.exists() == true){
+	                try {
+	                    FileWriter write = new FileWriter(myfile, true);
+	                    write.append(dataline);
+				    	//read_ct++;
+						write.close();		
+				    }catch (Exception e){
 					    		
-					    	}
-
-				    	}
-	          }
-	      };
-	      w_thread.start();
-	      }
+					}
+				}else{ //make a new file since we apparently need one
+	                try {
+	                    FileWriter write = new FileWriter(myfile, true);
+					    //	write.append(header);
+					    write.append(dataline);
+					    //read_ct++;
+						write.close();		
+	                }catch (Exception e){
+						    		
+					}
+	
+				}
+	        }
+	    };
+	    w_thread.start();
+    }
 	
     public static long timestamp(){
     	long timestamp = System.currentTimeMillis();
