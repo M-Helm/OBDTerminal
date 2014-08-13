@@ -50,112 +50,112 @@ public class BluetoothChatService {
 	
 	public Handler BTmsgHandler;
 	
-    // Debugging
-    private static final String TAG = "BluetoothChatService";
-    private static final boolean D = true;
+	// Debugging
+	private static final String TAG = "BluetoothChatService";
+	private static final boolean D = true;
 
-    // Name for the SDP record when creating server socket
-    private static final String NAME_SECURE = "BluetoothChatSecure";
-    private static final String NAME_INSECURE = "BluetoothChatInsecure";
+	// Name for the SDP record when creating server socket
+	private static final String NAME_SECURE = "BluetoothChatSecure";
+	private static final String NAME_INSECURE = "BluetoothChatInsecure";
 
-    // Unique UUID for this application
-    private static final UUID MY_UUID_SECURE =
-        UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
-    private static final UUID MY_UUID_INSECURE =
-        UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
+	// Unique UUID for this application
+	private static final UUID MY_UUID_SECURE =
+			UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
+	private static final UUID MY_UUID_INSECURE =
+			UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
-    // Member fields
-    private final BluetoothAdapter mAdapter;
-    private final Handler mHandler;
-    private AcceptThread mSecureAcceptThread;
-    private AcceptThread mInsecureAcceptThread;
-    private ConnectThread mConnectThread;
-    private ConnectedThread mConnectedThread;
-    private int mState;
+	// Member fields
+	private final BluetoothAdapter mAdapter;
+	private final Handler mHandler;
+	private AcceptThread mSecureAcceptThread;
+	private AcceptThread mInsecureAcceptThread;
+	private ConnectThread mConnectThread;
+	private ConnectedThread mConnectedThread;
+	private int mState;
 
-    // Constants that indicate the current connection state
-    public static final int STATE_NONE = 0;       // we're doing nothing
-    public static final int STATE_LISTEN = 1;     // now listening for incoming connections
-    public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
-    public static final int STATE_CONNECTED = 3;  // now connected to a remote device
+	// Constants that indicate the current connection state
+	public static final int STATE_NONE = 0;       // we're doing nothing
+	public static final int STATE_LISTEN = 1;     // now listening for incoming connections
+	public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
+	public static final int STATE_CONNECTED = 3;  // now connected to a remote device
 
-    /**
-     * Constructor. Prepares a new BluetoothChat session.
-     * @param context  The UI Activity Context
-     * @param handler  A Handler to send messages back to the UI Activity
-     */
-    public BluetoothChatService(Context context, Handler handler) {
-        mAdapter = BluetoothAdapter.getDefaultAdapter();
-        Log.d(TAG, "Adapter: " + mAdapter);
-    	//mAdapter = MainActivity.mBluetoothAdapter;
-        mState = STATE_NONE;
-        mHandler = handler;
-    }
+	/**
+	 * Constructor. Prepares a new BluetoothChat session.
+	 * @param context  The UI Activity Context
+	 * @param handler  A Handler to send messages back to the UI Activity
+	 */
+	public BluetoothChatService(Context context, Handler handler) {
+		mAdapter = BluetoothAdapter.getDefaultAdapter();
+		Log.d(TAG, "Adapter: " + mAdapter);
+		//mAdapter = MainActivity.mBluetoothAdapter;
+		mState = STATE_NONE;
+		mHandler = handler;
+	}
 
-    /**
-     * Set the current state of the chat connection
-     * @param state  An integer defining the current connection state
-     */
-    private synchronized void setState(int state) {
-        if (D) Log.d(TAG, "setState() " + mState + " -> " + state);
-        mState = state;
+	/**
+	 * Set the current state of the chat connection
+	 * @param state  An integer defining the current connection state
+	 */
+	private synchronized void setState(int state) {
+		if (D) Log.d(TAG, "setState() " + mState + " -> " + state);
+		mState = state;
 
-        // Give the new state to the Handler so the UI Activity can update
-        mHandler.obtainMessage(MainActivity.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
-    }
+		// Give the new state to the Handler so the UI Activity can update
+		mHandler.obtainMessage(MainActivity.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
+	}
 
-    /**
-     * Return the current connection state. */
-    public synchronized int getState() {
-        return mState;
-    }
+	/**
+	 * Return the current connection state. */
+	public synchronized int getState() {
+		return mState;
+	}
 
-    /**
-     * Start the chat service. Specifically start AcceptThread to begin a
-     * session in listening (server) mode. Called by the Activity onResume() */
-    public synchronized void start() {
-        if (D) Log.d(TAG, "start");
+	/**
+	 * Start the chat service. Specifically start AcceptThread to begin a
+	 * session in listening (server) mode. Called by the Activity onResume() */
+	public synchronized void start() {
+		if (D) Log.d(TAG, "start");
 
-        // Cancel any thread attempting to make a connection
-        if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
+		// Cancel any thread attempting to make a connection
+		if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
 
-        // Cancel any thread currently running a connection
-        if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
+		// Cancel any thread currently running a connection
+		if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
 
-        setState(STATE_LISTEN);
+		setState(STATE_LISTEN);
+		
+		// Start the thread to listen on a BluetoothServerSocket
+		if (mSecureAcceptThread == null) {
+			mSecureAcceptThread = new AcceptThread(true);
+			mSecureAcceptThread.start();
+		}
+		if (mInsecureAcceptThread == null) {
+			mInsecureAcceptThread = new AcceptThread(false);
+			mInsecureAcceptThread.start();
+		}
+	}
 
-        // Start the thread to listen on a BluetoothServerSocket
-        if (mSecureAcceptThread == null) {
-            mSecureAcceptThread = new AcceptThread(true);
-            mSecureAcceptThread.start();
-        }
-        if (mInsecureAcceptThread == null) {
-            mInsecureAcceptThread = new AcceptThread(false);
-            mInsecureAcceptThread.start();
-        }
-    }
+	/**
+	 * Start the ConnectThread to initiate a connection to a remote device.
+	 * @param device  The BluetoothDevice to connect
+	 * @param secure Socket Security type - Secure (true) , Insecure (false)
+	 */
+	public synchronized void connect(BluetoothDevice device, boolean secure) {
+		if (D) Log.d(TAG, "connect to: " + device);
 
-    /**
-     * Start the ConnectThread to initiate a connection to a remote device.
-     * @param device  The BluetoothDevice to connect
-     * @param secure Socket Security type - Secure (true) , Insecure (false)
-     */
-    public synchronized void connect(BluetoothDevice device, boolean secure) {
-        if (D) Log.d(TAG, "connect to: " + device);
+		// Cancel any thread attempting to make a connection
+		if (mState == STATE_CONNECTING) {
+			if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
+		}
 
-        // Cancel any thread attempting to make a connection
-        if (mState == STATE_CONNECTING) {
-            if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
-        }
+		// Cancel any thread currently running a connection
+		if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
 
-        // Cancel any thread currently running a connection
-        if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
-
-        // Start the thread to connect with the given device
-        mConnectThread = new ConnectThread(device, secure);
-        mConnectThread.start();
-        setState(STATE_CONNECTING);
-    }
+		// Start the thread to connect with the given device
+		mConnectThread = new ConnectThread(device, secure);
+		mConnectThread.start();
+		setState(STATE_CONNECTING);
+	}
 
     /**
      * Start the ConnectedThread to begin managing a Bluetooth connection
