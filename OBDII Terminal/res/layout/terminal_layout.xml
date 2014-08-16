@@ -6,7 +6,7 @@
     android:background="#000000"
     >
     
-        <ListView
+    <ListView
         android:id="@+id/in"
         android:layout_width="match_parent"
         android:layout_height="14dp"  
@@ -14,19 +14,19 @@
         android:transcriptMode="alwaysScroll" />
     
 
-<EditText
-    android:id="@+id/command_line"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignBottom="@+id/send_command"
-    android:layout_alignParentTop="true"
-    android:layout_toLeftOf="@+id/send_command"
-    android:inputType="text"
-    android:background="@drawable/input_frame"
-    android:textColor="#0000ee"
-    android:textSize="20sp" />
+    <EditText
+        android:id="@+id/command_line"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/send_command"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/send_command"
+        android:inputType="text"
+        android:background="@drawable/input_frame"
+        android:textColor="#0000ee"
+        android:textSize="20sp" />
    
-        <ScrollView
+    <ScrollView
 		android:id="@+id/SCROLLER_ID"
 		android:layout_below="@id/send_command"
 		android:layout_width="fill_parent"
@@ -52,8 +52,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/blue_btn"
+            android:background="@drawable/btn_white"
             android:text="@string/command_button"
-            android:textColor="#bbbbbb" />
+            android:textColor="#000000" />
     
 </RelativeLayout>

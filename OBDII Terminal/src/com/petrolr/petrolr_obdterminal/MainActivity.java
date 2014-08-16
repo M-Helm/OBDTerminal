@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.terminal_frag);
+		setContentView(R.layout.terminal_layout);
 		msgWindow = (TextView) findViewById(R.id.msgWindow);
 
 
@@ -119,18 +119,16 @@ public class MainActivity extends Activity {
 		Intent serverIntent = null;
 		
 		switch (item.getItemId()) {
-		
-		case R.id.secure_connect_scan:
-			// Launch the DeviceListActivity to see devices and do scan
-			serverIntent = new Intent(this, DeviceListActivity.class);
-			startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
-			return true;
-			
-			
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-		
+			case R.id.secure_connect_scan:
+				// Launch the DeviceListActivity to see devices and do scan
+				serverIntent = new Intent(this, DeviceListActivity.class);
+				startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
+				return true;
+				
+				
+			default:
+				return super.onOptionsItemSelected(item);
+		}		
 	}
 	
 	@Override
@@ -146,7 +144,7 @@ public class MainActivity extends Activity {
 		if (!mBluetoothAdapter.isEnabled()) {
 			Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-			// Otherwise, setup the chat session
+		// Otherwise, setup the chat session
 		} else {
 			if (mChatService == null) setupChat();
 		}
@@ -164,17 +162,13 @@ public class MainActivity extends Activity {
 
 	private void setupChat() {
 		Log.d(TAG, "setupChat()");
-
 		// Initialize the array adapter for the conversation thread
 		mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
 		mConversationView = (ListView) findViewById(R.id.in);
 		mConversationView.setAdapter(mConversationArrayAdapter);
-
-
 		// Initialize the BluetoothChatService to perform bluetooth connections
 		mChatService = new BluetoothChatService(this, mHandler);
 		Log.d("BT Handler SETUP ", "" +  mChatService.BTmsgHandler);
-
 		// Initialize the buffer for outgoing messages
 		mOutStringBuffer = new StringBuffer("");   
 	}	

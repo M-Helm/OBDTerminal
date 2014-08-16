@@ -14,8 +14,8 @@
     android:width="5dp"
     android:color="#33444444" />
   <gradient
-    android:endColor="#DD88b4d0"
-    android:startColor="#223388d0"
+    android:endColor="#DDFFFFFF"
+    android:startColor="#99FFFFFF"
     android:angle="45" />
   <corners
     android:bottomRightRadius="10dp"
@@ -26,4 +26,3 @@
 
       
 </shape>
-

@@ -3,6 +3,6 @@
     
     <item android:id="@+id/secure_connect_scan"
         android:title="Connect"
-        android:showAsAction="always" />
+        android:showAsAction="always"/>
 
 </menu>
