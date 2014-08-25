@@ -77,7 +77,6 @@ public class MainActivity extends Activity {
 	EditText command_line;
 	Button send_command;
 	TextView msgWindow;
-	String command_txt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -283,7 +282,7 @@ public class MainActivity extends Activity {
 		send_command.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				command_txt = command_line.getText().toString();
+				String command_txt = command_line.getText().toString();
 				msgWindow.append("\n" + "Command: " + command_txt);
 				command_line.setText("");
 				sendMessage(command_txt + "\r");
