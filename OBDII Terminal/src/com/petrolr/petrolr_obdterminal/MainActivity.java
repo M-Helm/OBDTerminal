@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Petrolr LLC, a Colorado limited liability company
+ * Copyright (C) 2015 Petrolr LLC, a Colorado limited liability company
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,8 +74,8 @@ public class MainActivity extends Activity {
 	public static final int MESSAGE_DEVICE_NAME = 4;
 	public static final int MESSAGE_TOAST = 5;
 
-	EditText command_line;
-	Button send_command;
+	EditText commandLineText;
+	Button sendCommandBtn;
 	TextView msgWindow;
 
 	@Override
@@ -133,9 +133,9 @@ public class MainActivity extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		command_line = (EditText) findViewById(R.id.command_line);
-		command_line.setInputType(InputType.TYPE_CLASS_TEXT);
-		command_line.setSingleLine();
+		commandLineText = (EditText) findViewById(R.id.command_line);
+		commandLineText.setInputType(InputType.TYPE_CLASS_TEXT);
+		commandLineText.setSingleLine();
 		addListenerOnButton();   
 
 		// If BT is not on, request that it be enabled.
@@ -278,13 +278,13 @@ public class MainActivity extends Activity {
 	};		  
 
 	public void addListenerOnButton() {
-		send_command = (Button) findViewById(R.id.send_command);
-		send_command.setOnClickListener(new OnClickListener() {
+		sendCommandBtn = (Button) findViewById(R.id.send_command);
+		sendCommandBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				String command_txt = command_line.getText().toString();
+				String command_txt = commandLineText.getText().toString();
 				msgWindow.append("\n" + "Command: " + command_txt);
-				command_line.setText("");
+				commandLineText.setText("");
 				sendMessage(command_txt + "\r");
 			}
 		});
