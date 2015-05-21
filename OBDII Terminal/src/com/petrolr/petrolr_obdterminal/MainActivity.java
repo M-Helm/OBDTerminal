@@ -65,8 +65,8 @@ public class MainActivity extends Activity {
 	// Key names received from the BluetoothChatService Handler
 	public static final String DEVICE_NAME = "device_name";
 	public static final String TOAST = "toast";
-	  
-	  
+	
+	
 	// Message types sent from the BluetoothChatService Handler
 	public static final int MESSAGE_STATE_CHANGE = 1;
 	public static final int MESSAGE_READ = 2;
@@ -83,8 +83,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.terminal_layout);
 		msgWindow = (TextView) findViewById(R.id.msgWindow);
-
-
 		
 		final ActionBar actionBar = getActionBar();
 		//  actionBar.setDisplayOptions(ActionBar.NAVIGATION_MODE_TABS);
