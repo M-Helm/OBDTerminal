@@ -21,17 +21,17 @@
 
 package com.petrolr.petrolr_obdterminal;
 
+import android.annotation.SuppressLint;
+import android.os.Environment;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
-import android.annotation.SuppressLint;
-import android.os.Environment;
+class LogWriter {
 
-public class LogWriter {
-
-	protected static void write_info(final String logmsg) {
+	static void write_info(final String logmsg) {
 		
 		// ++++ Fire off a thread to write info to file
 		
@@ -42,14 +42,14 @@ public class LogWriter {
 					    
 				String dataline = (timestamp() + ", " + logmsg + "\n");
 				File myfile = new File(myFilesDir + "/" + "Term_Log" + sDate() + ".txt");
-				if(myfile.exists() == true){
+				if(myfile.exists()){
 					try {
 						FileWriter write = new FileWriter(myfile, true);
 						write.append(dataline);
 						//read_ct++;
 						write.close();		
 					}catch (IOException e){
-						
+						//do something with exception
 					}
 				}else{ //make a new file since we apparently need one
 					try {
@@ -59,7 +59,7 @@ public class LogWriter {
 						//read_ct++;
 						write.close();		
 					}catch (IOException e){
-						    		
+						//do something with exception
 					}
 	
 				}
@@ -68,18 +68,15 @@ public class LogWriter {
 		w_thread.start();
 	}
 	
-	protected static long timestamp(){
-		long timestamp = System.currentTimeMillis();
-		return timestamp;
+	private static long timestamp(){
+		return System.currentTimeMillis();
 	}
 	
 	@SuppressLint("SimpleDateFormat")
-	protected static String sDate(){
-
+	private static String sDate(){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		java.util.Date date= new java.util.Date();
-		String sDate = sdf.format(date.getTime());
-		return sDate;
+		return sdf.format(date.getTime());
 	}
 	
 }
