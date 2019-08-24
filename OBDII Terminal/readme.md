@@ -1,4 +1,4 @@
-petrolr_OBDTerminal
+OBDTerminal
 ===================
 
 This is a simple OBD Terminal for Android that can be used to pass commands and receive responses from an OBDII device. Compatible with any Bluetooth OBD reader. You type in the commands. The terminal gives you back the OBD response. Works on most cars 1996 and newer. That's about it.
@@ -13,6 +13,4 @@ The exact form of the OBD response will very depending on the vehicle OBD protoc
 
 Responses from the OBD are written to a log file found on the phone under /android/data/petrolr/files.
 
-If you have questions, contact me, and check out the consumer OBD app we built for Android here http://petrolr.com. 
-
-http://petrolr.com || petrolr.app@gmail.com || matthew.helm@gmail.com
+matthew.helm@gmail.com
